@@ -3,7 +3,7 @@ game 'gta5'
 
 author 'Chamallaw and Loic'
 description 'A simple gofast script'
-version '1.0'
+version '1.1'
 
 shared_script 'shared/config.lua'
 client_script 'client/client.lua'

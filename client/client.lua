@@ -315,7 +315,7 @@ Citizen.CreateThread(function()
         RequestModel(hash)
         Wait(5000)
     end
-    startNpc = CreatePed("PED_TYPE_CIVMALE", Config.startNpcModel, Config.startNpcCoords.x, Config.startNpcCoords.y, Config.startNpcCoords.z, Config.startNpcCoords.w, false, true)
+    startNpc = CreatePed("PED_TYPE_CIVMALE", Config.startNpcModel, Config.startNpcCoords.x, Config.startNpcCoords.y, Config.startNpcCoords.z, Config.startNpcCoords.w, true, true)
     SetBlockingOfNonTemporaryEvents(startNpc, true)
     FreezeEntityPosition(startNpc, true)
     SetEntityInvincible(startNpc, true)
@@ -329,17 +329,16 @@ Citizen.CreateThread(function()
             local timer = GetGameTimer() + Config.missionTimeout
             while not IsPedInVehicle(GetPlayerPed(-1), car, false) and isInMission do
                 if GetGameTimer() >= timer then
-                    print("Finish")
                     isInMission = false
                     DeleteEntity(car)
                     car = nil
-                    sendUserMessage(Config.startNpcName.." : "..Texts.failTimeout)
+                    sendUserMessage("~r~"..Config.startNpcName.." : "..Texts.failTimeout)
                 end
-                Wait(500)
+                Citizen.Wait(60000)
             end
             timer = GetGameTimer() + Config.missionTimeout
         end
-        Wait(500)
+        Citizen.Wait(60000)
     end
 end)
 
