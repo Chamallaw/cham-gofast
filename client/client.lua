@@ -3,6 +3,7 @@ local startNpc
 local isInMission = false
 local car = nil
 local Texts = Texts[Config.language]
+local policeSearchZone = nil
 
 
 Citizen.CreateThread(function ()
@@ -15,17 +16,17 @@ Citizen.CreateThread(function ()
             }, {
             options = { 
                 { 
-                num = 1,
-                type = "client", 
-                event = "Test:Event",
-                icon = 'fas fa-car',
-                label = 'Lancer la mission Go Fast', 
-                action = function(startNpc) 
-                    if IsPedAPlayer(startNpc) then return false end 
-                    startGoFast()
-                  end,
-                drawColor = {255, 255, 255, 255},
-                successDrawColor = {30, 144, 255, 255}, 
+                    num = 1,
+                    type = "client", 
+                    event = "Test:Event",
+                    icon = 'fas fa-car',
+                    label = 'Lancer la mission Go Fast', 
+                    action = function(startNpc) 
+                        if IsPedAPlayer(startNpc) then return false end 
+                        startGoFast()
+                    end,
+                    drawColor = {255, 255, 255, 255},
+                    successDrawColor = {30, 144, 255, 255}, 
                 }
             },
             distance = 1.5, 
@@ -67,6 +68,7 @@ function startGoFast()
                 isStopMessageSend = true
             end
             if distance <= Config.loadDrugs.radius and IsVehicleStopped(car) == 1 then
+                TriggerServerEvent(Config.sendPoliceSearchZoneServer, playerCoords, vehicleName)
                 isStoppedInZone = true
                 FreezeEntityPosition(car, true)
                 loadDrugs(car, loadDrug)
@@ -88,6 +90,7 @@ function startGoFast()
                 isStopMessageSend = true
             end
             if distance <= Config.sellDrugs.radius and IsVehicleStopped(car) == 1 then
+                TriggerServerEvent(Config.sendPoliceSearchZoneServer, playerCoords, vehicleName)
                 isStoppedInZone = true
                 FreezeEntityPosition(car, true)
                 unloadDrugs(car, sellDrug)
@@ -108,13 +111,14 @@ function startGoFast()
                 isStopMessageSend = true
             end
             if distance <= Config.dropRadius and IsVehicleStopped(car) == 1 then
+                TriggerServerEvent(Config.sendPoliceSearchZoneServer, playerCoords, vehicleName)
                 isStoppedInZone = true
                 FreezeEntityPosition(car, true)
                 Citizen.Wait(300000) -- 5 Minutes
                 DeleteEntity(car)
                 car = nil
                 isInMission = false
-                sendUserMessage(Config.startNpcName.." : "..Texts.Done)
+                sendUserMessage(Config.startNpcName.." : "..Texts.done)
             end
         end
     else
@@ -316,6 +320,23 @@ Citizen.CreateThread(function()
     FreezeEntityPosition(startNpc, true)
     SetEntityInvincible(startNpc, true)
     RemoveAllPedWeapons(startNpc, true)
+end)
+
+-- Send Police Search Zone
+RegisterNetEvent(Config.sendPoliceSearchZoneClient, function(coords, vehicleName)
+    if policeSearchZone ~= nil then
+        RemoveBlip(policeSearchZone)
+    end
+
+    policeSearchZone = AddBlipForRadius(coords.x, coords.y, coords.z , Config.searchZone.policeSearchZoneRadius) -- you can use a higher number for a bigger zone
+
+	SetBlipHighDetail(policeSearchZone, true)
+	SetBlipColour(policeSearchZone, Config.searchZone.SetBlipColour)
+	SetBlipAlpha(policeSearchZone, Config.searchZone.SetBlipAlpha)
+
+    sendUserMessage(Texts.searchAlert..vehicleName)
+    sendUserMessage(Texts.searchZoneText)
+    PlaySoundFrontend(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", false)
 end)
 
 AddEventHandler('onResourceStop', function(resourceName)

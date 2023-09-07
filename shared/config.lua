@@ -11,17 +11,25 @@ Config = {
     minEarningMoney = 5000, -- Minimal earning
     maxEarningMoney = 10000, -- Maximal Earning
     giveMoneyServerEventName = "cham-gofast:server:giveMoney", -- Server Event name for giving player money
+    sendPoliceSearchZoneServer = "chal-gofast:server:sendPoliceSearchZone", -- Server Event name for giving lspd zone
+    sendPoliceSearchZoneClient = "chal-gofast:client:sendPoliceSearchZone", -- Server Event name for giving lspd zone
+    searchZone = {
+        policeSearchZoneRadius = 400.0, -- Radius of search zone
+        allowedJobs = { "lspd", },
+        SetBlipColour = 5,
+        SetBlipAlpha = 128,
+    },
     moneyType = "marked_money", -- Type of money (money, marked_money, bank)
     currency = "$", -- currency, used in notification
 
     -- VEHICLE
     vehicleList = { -- Liste of gofast vehicles
-        "sultan",
-        "sentinel",
-        "dominator3",
-        "raiden",
-        "cypher",
-        "rhinehart",
+        "Sultan",
+        "Sentinel",
+        "Dominator3",
+        "Raiden",
+        "Cypher",
+        "Rhinehart",
     },
     vehicleCoords = vector4(1283.35, -3328.08, 5.90, 354.73), -- Coords where the vehicle will spawn
 
@@ -33,10 +41,10 @@ Config = {
         radius = 30, -- Radius of the zone
         loadList = { -- Zone list
             {
-                zoneCoords = vector3(1261.41, -3256.32, 5.25), -- Coords of the zone
+                zoneCoords = vector3(855.41, -2306.84, 30.35), -- Coords of the zone
                 ped = { 
                     modelName = "s_m_y_dealer_01", -- Peds model that will bring the box
-                    spawnCoords = vector3(1280.47, -3243.99, 5.90) -- Peds spawn coords (Hide the spawn for more immersion)
+                    spawnCoords = vector3(869.52, -2308.89, 30.57) -- Peds spawn coords (Hide the spawn for more immersion)
                 }, 
             },
         },
@@ -53,14 +61,14 @@ Config = {
         radius = 30, -- Radius of the zone
         pedGivingTheMoney = { 
             modelName = "cs_bankman", -- Peds model that will bring the money
-            spawnCoords = vector3(1182.17, -3323.82, 6.03) -- Peds spawn coords (Hide the spawn for more immersion)
+            spawnCoords = vector3(1213.38, -3097.63, 5.83) -- Peds spawn coords (Hide the spawn for more immersion)
         },
         sellList = {
             {
-                zoneCoords = vector3(1200.75, -3338.18, 5.80), -- Coords of the zone
+                zoneCoords = vector3(1202.53, -3092.50, 5.80), -- Coords of the zone
                 ped = { 
                     modelName = "g_m_y_mexgoon_01", -- Peds model that will take the box
-                    spawnCoords = vector3(1180.17, -3323.82, 6.03) -- Peds spawn coords (Hide the spawn for more immersion)
+                    spawnCoords = vector3(1213.38, -3097.63, 5.83) -- Peds spawn coords (Hide the spawn for more immersion)
                 },
             },
         },
@@ -84,11 +92,15 @@ Texts = {
         textAfterLoadingDrugs = 'Guys: Everything is loaded, go!',
         textAfterLoadingDrugsGps = 'Guys: If you have a GPS, I will send it to you in a few seconds',
         textArrivingSellDrugs = 'It should be around here, stop...',
-        textAfterSellDrugs = 'Guys: Pleasure doing business with you... Get rid of the car now.',
-        textAfterSellDrugsGps = "Guys: I'm sending you a location where you can drop it off.",
+        textAfterSellDrugs = 'The man: Pleasure doing business with you... Get rid of the car now.',
+        textAfterSellDrugsGps = "The man: I'm sending you a location where you can drop it off.",
         getMoneyMessage = 'You have received : ~b~',
         textArrivingDropVehicle = 'Stop here and leave the car, I will come pick it up.',
-        Done = "I've retrieved the car, come see me if you want to do it again.",
+        done = "I've retrieved the car, come see me if you want to do it again.",
+
+        searchAlert = "~b~Dispatch: A vehicle suspected of GOFAST has been spotted, model: ~g~",
+        searchZoneText = "~b~Dispatch: ~y~The zone~b~ is on your GPS",
+
     },
     ['fr'] = {
         textToAcceptGoFast = 'Appuyez sur ~b~[E]~w~ pour accepter la mission de GoFast',
@@ -98,10 +110,13 @@ Texts = {
         textAfterLoadingDrugs = "Les gars : C'est bon tout est chargé, file !",
         textAfterLoadingDrugsGps = "Les gars : Si t'as un gps je te transmet ça dans quelques secondes",
         textArrivingSellDrugs = "Normalement c'est par ici, arrête toi...",
-        textAfterSellDrugs = "Les gars : Un plaisir de faire affaire avec toi... Débarasse toi de la voiture maitenant.",
-        textAfterSellDrugsGps = "Les gars : Je t'envoie une position où tu peux la déposer.",
+        textAfterSellDrugs = "L'homme : Un plaisir de faire affaire avec toi... Débarasse toi de la voiture maitenant.",
+        textAfterSellDrugsGps = "L'homme : Je t'envoie une position où tu peux la déposer.",
         getMoneyMessage = "Vous avez reçu : ~b~",
         textArrivingDropVehicle = "Arrête toi là et laisse la voiture, je vais venir la chercher.",
-        Done = "C'est bon j'ai récupéré la caisse, passe me voir si tu veux le refaire.",
+        done = "C'est bon j'ai récupéré la caisse, passe me voir si tu veux le refaire.",
+
+        searchAlert = "~b~Centrale : Un véhicule suspecté de GOFAST à été repéré, modèle : ~g~",
+        searchZoneText = "~b~Centrale : ~y~La zone~b~ est sur votre GPS",
     },
 }
