@@ -10,10 +10,12 @@ https://drive.google.com/file/d/11WJiQEMF3DSopEMJrWmTTwhn2rkxQIGi/view?usp=shari
 * You can rename the folder
 * Add ```ensure cham-gofast``` to your server configuration file. (Or the renamed folder name)
 * Replace the notification système with your :
+~~~
 function sendUserMessage(text)
     -- Replace this with your notification système
     exports["soz-core"]:DrawNotification(text)
 end
+~~~
 * Customise the shared/config.lua file
 * Enjoy !
 
