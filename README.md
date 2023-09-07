@@ -20,6 +20,11 @@ end
 ## How to use
 * Find the start NPC and press E (INPUT CONTEXT KEY)
 
+## Patch Notes
+#### V1.1
+* Replacing the old text with QB-Target
+* [+] customisable search zone when the player is loading, unloading or throwing the car
+* [+]
 #### V1.0
 * Adding initial PED
 * Adding Vehicle Spawn
