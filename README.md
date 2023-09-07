@@ -22,17 +22,17 @@ end
 
 ## Patch Notes
 #### V1.1
-* Replacing the old text with QB-Target
+* [*] the old text with QB-Target
 * [+] customisable search zone when the player is loading, unloading or throwing the car
-* [+]
+* [+] an end condition that stop the mission if the player leave the car for more than 5-6 minutes
 #### V1.0
-* Adding initial PED
-* Adding Vehicle Spawn
-* Adding Load point with peds and animations
-* Adding Unload point with peds and animations
-* Adding the ped that gives money
-* Adding the final point to leave the car
-* Adding the remove peds and car at the end
+* [+] initial PED
+* [+] Vehicle Spawn
+* [+] Load point with peds and animations
+* [+] Unload point with peds and animations
+* [+] the ped that gives money
+* [+] the final point to leave the car
+* [+] the remove peds and car at the end
 
 ## Note
 * This script is paid, so if you didn't pay please do not use it.
