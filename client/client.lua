@@ -9,14 +9,27 @@ Citizen.CreateThread(function ()
     while true do
         Wait(0)
         if not isInMission then
-            local playerCoords = GetEntityCoords(PlayerPedId())
-            local startNpcCoords = vector3(Config.startNpcCoords.x, Config.startNpcCoords.y, Config.startNpcCoords.z)
-            if #(playerCoords - startNpcCoords) <= Config.textViewDistance then
-                QBCore.Functions.DrawText3D(startNpcCoords.x, startNpcCoords.y, startNpcCoords.z+1, Texts.textToAcceptGoFast)
-                if IsControlJustPressed(1, 51) then
+            exports['qb-target']:AddCircleZone("GoFast", vector3(Config.startNpcCoords.x, Config.startNpcCoords.y, Config.startNpcCoords.z+1), 1.5, { 
+            name = "GoFast", 
+            debugPoly = false, 
+            }, {
+            options = { 
+                { 
+                num = 1,
+                type = "client", 
+                event = "Test:Event",
+                icon = 'fas fa-car',
+                label = 'Lancer la mission Go Fast', 
+                action = function(startNpc) 
+                    if IsPedAPlayer(startNpc) then return false end 
                     startGoFast()
-                end
-            end
+                  end,
+                drawColor = {255, 255, 255, 255},
+                successDrawColor = {30, 144, 255, 255}, 
+                }
+            },
+            distance = 1.5, 
+            })
         end
     end
 end)
