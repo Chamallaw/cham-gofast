@@ -2,7 +2,7 @@
 A FiveM script written in LUA that implements customisable GoFast with QB Core
 
 ## Démo
-<video src=https://cdn.discordapp.com/attachments/1149080870532153476/1149249740135989248/GoFast.mp4>
+<video src="https://drive.google.com/file/d/11WJiQEMF3DSopEMJrWmTTwhn2rkxQIGi/view?usp=sharing">
 
 ## Installation
 * Download the resource
