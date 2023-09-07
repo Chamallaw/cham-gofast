@@ -1,35 +1,33 @@
-# 3D /me
-A FiveM script written in LUA that implements the /me command with 3D printing.
+# GoFast by Chamallaw
+A FiveM script written in LUA that implements customisable GoFast with QB Core
 
-The /me command allows you to display a specific action above the head of a player. It's particularly used for actions that couldn't have been done in game in a roleplay context.
-
-<img src=https://imgur.com/lJZbcGA.png>
+## Démo
+<video src=https://cdn.discordapp.com/attachments/1149080870532153476/1149249740135989248/GoFast.mp4>
 
 ## Installation
-* Download the resource ;
-* Drag and drop it into your resources folder ;
-* Add ```ensure 3dme``` to your server configuration file.
+* Download the resource
+* Drag and drop it into your resources folder
+* You can rename the folder
+* Add ```ensure cham-gofast``` to your server configuration file. (Or the renamed folder name)
+* Replace the notification système with your :
+function sendUserMessage(text)
+    -- Replace this with your notification système
+    exports["soz-core"]:DrawNotification(text)
+end
+* Customise the shared/config.lua file
+* Enjoy !
 
 ## How to use
-* In the chat, type /me followed by your action.
+* Find the start NPC and press E (INPUT CONTEXT KEY)
 
-## Options 
-| Parameter | Line | Suggestion |
-| --- | --- | --- |
-| Color of the text | ```config.lua``` : line 6 | ```color = { r = 230, g = 230, b = 230, a = 255 }``` |
-| Font of the text | ```config.lua``` : line 7 | ```font = 0``` ([available fonts](https://imgur.com/a/oV3ciWs)) |
-| Time on screen | ```config.lua``` : line 8 | ```time = 5000``` |
-| Language | ```config.lua``` : line 4 | ```language = 'en'``` |
-
-## Updates
-To see the previous changelogs, please refer to the [FiveM forum post](https://forum.cfx.re/t/release-me-but-the-text-is-3d-printed/).
-
-#### V3.0
-* A lot of refactoring ;
-* Some major optimizations ;
-* Multiple `/me` do not stack anymore but get replaced ;
+#### V1.0
+* Adding initial PED
+* Adding Vehicle Spawn
+* Adding Load point with peds and animations
+* Adding Unload point with peds and animations
+* Adding the ped that gives money
+* Adding the final point to leave the car
+* Adding the remove peds and car at the end
 
 ## Note
-* This may not work if are you using a custom chat resource ;
-* This could conflict with other /me scripts (disable them) ;
-* This script is fully standalone.
+* This script is paid, so if you didn't pay please do not use it.

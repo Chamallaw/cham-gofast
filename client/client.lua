@@ -1,4 +1,3 @@
--- Variables
 local QBCore = exports['qb-core']:GetCoreObject()
 local startNpc
 local isInMission = false
@@ -6,7 +5,6 @@ local car = nil
 local Texts = Texts[Config.language]
 
 
--- Threads
 Citizen.CreateThread(function ()
     while true do
         Wait(0)
@@ -38,10 +36,10 @@ function startGoFast()
         SetVehicleDoorsLocked(car, 1)
         SetVehicleDoorsLockedForAllPlayers(car, false)
     
-        exports["soz-core"]:DrawNotification(Config.startNpcName.." : "..Texts.textAfterStarting)
-        exports["soz-core"]:DrawNotification(Config.startNpcName.." : "..Texts.textAfterStartingGps)
+        sendUserMessage(Config.startNpcName.." : "..Texts.textAfterStarting)
+        sendUserMessage(Config.startNpcName.." : "..Texts.textAfterStartingGps)
 
-        local loadDrug = Config.loadDrugs.loadLists[math.random(#Config.loadDrugs.loadLists)]
+        local loadDrug = Config.loadDrugs.loadList[math.random(#Config.loadDrugs.loadList)]
         local loadDrugCoords = loadDrug.zoneCoords
         SetNewWaypoint(loadDrugCoords.x, loadDrugCoords.y)
         local isStopMessageSend = false
@@ -52,7 +50,7 @@ function startGoFast()
             local playerCoords = GetEntityCoords(PlayerPedId())
             distance = #(playerCoords-loadDrugCoords)
             if distance <= Config.loadDrugs.radius and not isStopMessageSend then
-                exports["soz-core"]:DrawNotification(Config.startNpcName.." : "..Texts.textArrivingLoadDrugs)
+                sendUserMessage(Config.startNpcName.." : "..Texts.textArrivingLoadDrugs)
                 isStopMessageSend = true
             end
             if distance <= Config.loadDrugs.radius and IsVehicleStopped(car) == 1 then
@@ -62,7 +60,7 @@ function startGoFast()
             end
         end
 
-        local sellDrug = Config.sellDrugs.sellLists[math.random(#Config.sellDrugs.sellLists)]
+        local sellDrug = Config.sellDrugs.sellList[math.random(#Config.sellDrugs.sellList)]
         local sellDrugCoords = sellDrug.zoneCoords
         SetNewWaypoint(sellDrugCoords.x, sellDrugCoords.y)
         isStopMessageSend = false
@@ -73,13 +71,37 @@ function startGoFast()
             local playerCoords = GetEntityCoords(PlayerPedId())
             distance = #(playerCoords-sellDrugCoords)
             if distance <= Config.sellDrugs.radius and not isStopMessageSend then
-                exports["soz-core"]:DrawNotification(Config.startNpcName.." : "..Texts.textArrivingSellDrugs)
+                sendUserMessage(Config.startNpcName.." : "..Texts.textArrivingSellDrugs)
                 isStopMessageSend = true
             end
             if distance <= Config.sellDrugs.radius and IsVehicleStopped(car) == 1 then
                 isStoppedInZone = true
                 FreezeEntityPosition(car, true)
                 unloadDrugs(car, sellDrug)
+            end
+        end
+
+        local dropPoint = Config.dropLists[math.random(#Config.dropLists)]
+        SetNewWaypoint(dropPoint.x, dropPoint.y)
+        isStopMessageSend = false
+        isStoppedInZone = false
+
+        while not isStoppedInZone do
+            Wait(0)
+            local playerCoords = GetEntityCoords(PlayerPedId())
+            distance = #(playerCoords-dropPoint)
+            if distance <= Config.dropRadius and not isStopMessageSend then
+                sendUserMessage(Config.startNpcName.." : "..Texts.textArrivingDropVehicle)
+                isStopMessageSend = true
+            end
+            if distance <= Config.dropRadius and IsVehicleStopped(car) == 1 then
+                isStoppedInZone = true
+                FreezeEntityPosition(car, true)
+                Citizen.Wait(300000) -- 5 Minutes
+                DeleteEntity(car)
+                car = nil
+                isInMission = false
+                sendUserMessage(Config.startNpcName.." : "..Texts.Done)
             end
         end
     else
@@ -147,8 +169,8 @@ function loadDrugs(car, loadDrug)
 
     Citizen.Wait(100)
 
-    exports["soz-core"]:DrawNotification(Texts.textAfterLoadingDrugs)
-    exports["soz-core"]:DrawNotification(Texts.textAfterLoadingDrugsGps)
+    sendUserMessage(Texts.textAfterLoadingDrugs)
+    sendUserMessage(Texts.textAfterLoadingDrugsGps)
     FreezeEntityPosition(car, false)
 
     Citizen.Wait(10000)
@@ -242,13 +264,18 @@ function unloadDrugs(car, sellDrugs)
 
     StopAnimTask(pedGivingTheMoney, Config.sellDrugs.giveMoneyAnimationDictonary, Config.sellDrugs.giveMoneyAnimationName, 1.0)
     DeleteEntity(suitcase)
+    
+    -- Give the player money
+    local amount = math.random(Config.minEarningMoney, Config.maxEarningMoney)
+    TriggerServerEvent(Config.giveMoneyServerEventName, Config.moneyType, amount)
+    sendUserMessage(Texts.getMoneyMessage..amount..Config.currency)
 
     TaskGoToCoordAnyMeans(pedGivingTheMoney, sellDrugs.ped.spawnCoords.x + 1, sellDrugs.ped.spawnCoords.y, sellDrugs.ped.spawnCoords.z, 1.0, 0, false, 786603, 0xbf800000)
     
     Citizen.Wait(1000)
     
-    exports["soz-core"]:DrawNotification(Texts.textAfterSellDrugs)
-    exports["soz-core"]:DrawNotification(Texts.textAfterSellDrugsGps)
+    sendUserMessage(Texts.textAfterSellDrugs)
+    sendUserMessage(Texts.textAfterSellDrugsGps)
     FreezeEntityPosition(car, false)
     
     Citizen.Wait(10000)
@@ -258,6 +285,11 @@ function unloadDrugs(car, sellDrugs)
     DeleteEntity(ped1)
     DeleteEntity(ped2)
     DeleteEntity(pedGivingTheMoney)
+end
+
+function sendUserMessage(text)
+    -- Replace this with your notification système
+    exports["soz-core"]:DrawNotification(text)
 end
 
 Citizen.CreateThread(function()
