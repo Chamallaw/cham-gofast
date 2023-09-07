@@ -10,6 +10,7 @@ Config = {
     startNpcName = "Lamar", -- Name of the start NPC (Used in notifcation)
     minEarningMoney = 5000, -- Minimal earning
     maxEarningMoney = 10000, -- Maximal Earning
+    missionTimeout = 300000, -- 5 min mission timeout
     giveMoneyServerEventName = "cham-gofast:server:giveMoney", -- Server Event name for giving player money
     sendPoliceSearchZoneServer = "chal-gofast:server:sendPoliceSearchZone", -- Server Event name for giving lspd zone
     sendPoliceSearchZoneClient = "chal-gofast:client:sendPoliceSearchZone", -- Server Event name for giving lspd zone
@@ -101,6 +102,7 @@ Texts = {
         searchAlert = "~b~Dispatch: A vehicle suspected of GOFAST has been spotted, model: ~g~",
         searchZoneText = "~b~Dispatch: ~y~The zone~b~ is on your GPS",
 
+        failTimeout = "You left the car, it's over...",
     },
     ['fr'] = {
         textToAcceptGoFast = 'Appuyez sur ~b~[E]~w~ pour accepter la mission de GoFast',
@@ -118,5 +120,7 @@ Texts = {
 
         searchAlert = "~b~Centrale : Un véhicule suspecté de GOFAST à été repéré, modèle : ~g~",
         searchZoneText = "~b~Centrale : ~y~La zone~b~ est sur votre GPS",
+
+        failTimeout = "T'as abandonné la caisse, c'est fini pour cette fois.",
     },
 }

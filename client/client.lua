@@ -114,7 +114,7 @@ function startGoFast()
                 TriggerServerEvent(Config.sendPoliceSearchZoneServer, playerCoords, vehicleName)
                 isStoppedInZone = true
                 FreezeEntityPosition(car, true)
-                Citizen.Wait(300000) -- 5 Minutes
+                Citizen.Wait(Config.missionTimeout) -- 5 Minutes
                 DeleteEntity(car)
                 car = nil
                 isInMission = false
@@ -322,6 +322,27 @@ Citizen.CreateThread(function()
     RemoveAllPedWeapons(startNpc, true)
 end)
 
+-- Reset Mission
+Citizen.CreateThread(function()
+    while true do
+        if isInMission and car ~= nil then
+            local timer = GetGameTimer() + Config.missionTimeout
+            while not IsPedInVehicle(GetPlayerPed(-1), car, false) and isInMission do
+                if GetGameTimer() >= timer then
+                    print("Finish")
+                    isInMission = false
+                    DeleteEntity(car)
+                    car = nil
+                    sendUserMessage(Config.startNpcName.." : "..Texts.failTimeout)
+                end
+                Wait(500)
+            end
+            timer = GetGameTimer() + Config.missionTimeout
+        end
+        Wait(500)
+    end
+end)
+
 -- Send Police Search Zone
 RegisterNetEvent(Config.sendPoliceSearchZoneClient, function(coords, vehicleName)
     if policeSearchZone ~= nil then
@@ -341,4 +362,7 @@ end)
 
 AddEventHandler('onResourceStop', function(resourceName)
     DeleteEntity(startNpc)
+    if car ~= nil then
+        DeleteEntity(car)
+    end
 end)
