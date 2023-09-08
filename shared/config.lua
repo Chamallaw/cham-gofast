@@ -4,7 +4,7 @@ Config = {
     textViewDistance = 2, -- The distance to add the start Text
 
     -- START
-    startNpcCoords = vector4(1296.60, -3346.14, 5.03, 29.02), -- Coords of the start NPC
+    startNpcCoords = vector4(-1147.98, -1113.96, 1.29, 114.42), -- Coords of the start NPC
     startNpcModel = "ig_lamardavis", -- Skin on the start NPC
     startNpcAnimation = "WORLD_HUMAN_AA_SMOKE", -- Animation of the start NPC
     startNpcName = "Lamar", -- Name of the start NPC (Used in notifcation)
@@ -14,6 +14,11 @@ Config = {
     giveMoneyServerEventName = "cham-gofast:server:giveMoney", -- Server Event name for giving player money
     sendPoliceSearchZoneServer = "chal-gofast:server:sendPoliceSearchZone", -- Server Event name for giving lspd zone
     sendPoliceSearchZoneClient = "chal-gofast:client:sendPoliceSearchZone", -- Server Event name for giving lspd zone
+    policeNotification = {
+        title = "CENTRALE",
+        subtitle = "GoFast",
+        logo = "CHAR_CALL911",
+    },
     searchZone = {
         policeSearchZoneRadius = 400.0, -- Radius of search zone
         allowedJobs = { "lspd", },
@@ -32,7 +37,7 @@ Config = {
         "Cypher",
         "Rhinehart",
     },
-    vehicleCoords = vector4(1283.35, -3328.08, 5.90, 354.73), -- Coords where the vehicle will spawn
+    vehicleCoords = vector4(-1163.77, -1119.71, 1.71, 116.15), -- Coords where the vehicle will spawn
 
     -- FIRST POINT > Load drugs
     loadDrugs = {
@@ -41,11 +46,39 @@ Config = {
         cargoModelName = "prop_mp_drug_package", -- Props name of the box
         radius = 30, -- Radius of the zone
         loadList = { -- Zone list
-            {
+            { -- Zone 1
                 zoneCoords = vector3(855.41, -2306.84, 30.35), -- Coords of the zone
                 ped = { 
                     modelName = "s_m_y_dealer_01", -- Peds model that will bring the box
                     spawnCoords = vector3(869.52, -2308.89, 30.57) -- Peds spawn coords (Hide the spawn for more immersion)
+                }, 
+            },
+            { -- Zone 2
+                zoneCoords = vector3(2592.87, 2800.95, 33.55), -- Coords of the zone
+                ped = { 
+                    modelName = "s_m_y_dealer_01", -- Peds model that will bring the box
+                    spawnCoords = vector3(2610.18, 2803.50, 33.72) -- Peds spawn coords (Hide the spawn for more immersion)
+                }, 
+            },
+            { -- Zone 3
+                zoneCoords = vector3(1411.70, 3620.54, 34.31), -- Coords of the zone
+                ped = { 
+                    modelName = "s_m_y_dealer_01", -- Peds model that will bring the box
+                    spawnCoords = vector3(1401.53, 3626.90, 34.89) -- Peds spawn coords (Hide the spawn for more immersion)
+                }, 
+            },
+            { -- Zone 4
+                zoneCoords = vector3(-925.99, -2923.21, 13.36), -- Coords of the zone
+                ped = { 
+                    modelName = "s_m_y_dealer_01", -- Peds model that will bring the box
+                    spawnCoords = vector3(-936.59, -2930.39, 13.96) -- Peds spawn coords (Hide the spawn for more immersion)
+                }, 
+            },
+            { -- Zone 5
+                zoneCoords = vector3(1725.44, -1599.56, 111.94), -- Coords of the zone
+                ped = { 
+                    modelName = "s_m_y_dealer_01", -- Peds model that will bring the box
+                    spawnCoords = vector3(1714.68, -1598.61, 113.81) -- Peds spawn coords (Hide the spawn for more immersion)
                 }, 
             },
         },
@@ -60,16 +93,60 @@ Config = {
         cargoModelName = "prop_mp_drug_package",  -- Props name of the box
         suitCaseModelName = "prop_security_case_01",  -- Props name of the suitecase
         radius = 30, -- Radius of the zone
-        pedGivingTheMoney = { 
-            modelName = "cs_bankman", -- Peds model that will bring the money
-            spawnCoords = vector3(1213.38, -3097.63, 5.83) -- Peds spawn coords (Hide the spawn for more immersion)
-        },
         sellList = {
-            {
+            { -- Zone 1
+                pedGivingTheMoney = { 
+                    modelName = "cs_bankman", -- Peds model that will bring the money
+                    spawnCoords = vector3(1213.38, -3097.63, 5.83) -- Peds spawn coords (Hide the spawn for more immersion)
+                },
                 zoneCoords = vector3(1202.53, -3092.50, 5.80), -- Coords of the zone
                 ped = { 
                     modelName = "g_m_y_mexgoon_01", -- Peds model that will take the box
                     spawnCoords = vector3(1213.38, -3097.63, 5.83) -- Peds spawn coords (Hide the spawn for more immersion)
+                },
+            },
+            { -- Zone 2
+                pedGivingTheMoney = { 
+                    modelName = "cs_bankman", -- Peds model that will bring the money
+                    spawnCoords = vector3(-61.74, -2517.78, 7.40) -- Peds spawn coords (Hide the spawn for more immersion)
+                },
+                zoneCoords = vector3(-62.96, -2526.48, 5.43), -- Coords of the zone
+                ped = { 
+                    modelName = "g_m_y_mexgoon_01", -- Peds model that will take the box
+                    spawnCoords = vector3(-61.74, -2517.78, 7.40) -- Peds spawn coords (Hide the spawn for more immersion)
+                },
+            },
+            { -- Zone 3
+                pedGivingTheMoney = { 
+                    modelName = "cs_bankman", -- Peds model that will bring the money
+                    spawnCoords = vector3(1707.50, 4837.42, 42.02) -- Peds spawn coords (Hide the spawn for more immersion)
+                },
+                zoneCoords = vector3(1704.46, 4850.85, 41.45), -- Coords of the zone
+                ped = { 
+                    modelName = "g_m_y_mexgoon_01", -- Peds model that will take the box
+                    spawnCoords = vector3(1707.50, 4837.42, 42.02) -- Peds spawn coords (Hide the spawn for more immersion)
+                },
+            },
+            { -- Zone 4
+                pedGivingTheMoney = { 
+                    modelName = "cs_bankman", -- Peds model that will bring the money
+                    spawnCoords = vector3(2001.48, 3039.34, 47.21) -- Peds spawn coords (Hide the spawn for more immersion)
+                },
+                zoneCoords = vector3(1993.30, 3036.13, 47.03), -- Coords of the zone
+                ped = { 
+                    modelName = "g_m_y_mexgoon_01", -- Peds model that will take the box
+                    spawnCoords = vector3(2001.48, 3039.34, 47.21) -- Peds spawn coords (Hide the spawn for more immersion)
+                },
+            },
+            { -- Zone 5
+                pedGivingTheMoney = { 
+                    modelName = "cs_bankman", -- Peds model that will bring the money
+                    spawnCoords = vector3(91.34, 3746.78, 40.77) -- Peds spawn coords (Hide the spawn for more immersion)
+                },
+                zoneCoords = vector3(95.47, 3736.00, 39.62), -- Coords of the zone
+                ped = { 
+                    modelName = "g_m_y_mexgoon_01", -- Peds model that will take the box
+                    spawnCoords = vector3(91.34, 3746.78, 40.77) -- Peds spawn coords (Hide the spawn for more immersion)
                 },
             },
         },
@@ -78,49 +155,10 @@ Config = {
     -- FINAL POINT > Drop the vehicle
     dropLists = {
         vector3(1244.51, -3276.48, 5.43), -- Coords of the zone
+        vector3(-440.91, 6341.68, 12.15), -- Coords of the zone2
+        vector3(-496.50, 5264.59, 80.03), -- Coords of the zone3
+        vector3(-439.83, -2181.24, 9.74), -- Coords of the zone4
+        vector3(1148.64, -1642.00, 35.76), -- Coords of the zone5
     },
     dropRadius = 15, -- Radius of the zone
-
-}
-
--- Languages available
-Texts = {
-    ['en'] = {
-        textToAcceptGoFast = 'Press ~b~[E]~w~ to accept the GoFast mission',
-        textAfterStarting = 'Get in the car behind you and go pick up the drugs.',
-        textAfterStartingGps = 'If you have a GPS, I will set the location for you...',
-        textArrivingLoadDrugs = 'Stop here, they will be here soon',
-        textAfterLoadingDrugs = 'Guys: Everything is loaded, go!',
-        textAfterLoadingDrugsGps = 'Guys: If you have a GPS, I will send it to you in a few seconds',
-        textArrivingSellDrugs = 'It should be around here, stop...',
-        textAfterSellDrugs = 'The man: Pleasure doing business with you... Get rid of the car now.',
-        textAfterSellDrugsGps = "The man: I'm sending you a location where you can drop it off.",
-        getMoneyMessage = 'You have received : ~b~',
-        textArrivingDropVehicle = 'Stop here and leave the car, I will come pick it up.',
-        done = "I've retrieved the car, come see me if you want to do it again.",
-
-        searchAlert = "~b~Dispatch: A vehicle suspected of GOFAST has been spotted, model: ~g~",
-        searchZoneText = "~b~Dispatch: ~y~The zone~b~ is on your GPS",
-
-        failTimeout = "You left the car, it's over...",
-    },
-    ['fr'] = {
-        textToAcceptGoFast = 'Appuyez sur ~b~[E]~w~ pour accepter la mission de GoFast',
-        textAfterStarting = "Monte dans la voiture derrière toi, et va récupérer la drogue.",
-        textAfterStartingGps = "Si t'as un gps je te met la position...",
-        textArrivingLoadDrugs = "Arrête toi là, ils ne vont pas tarder",
-        textAfterLoadingDrugs = "Les gars : C'est bon tout est chargé, file !",
-        textAfterLoadingDrugsGps = "Les gars : Si t'as un gps je te transmet ça dans quelques secondes",
-        textArrivingSellDrugs = "Normalement c'est par ici, arrête toi...",
-        textAfterSellDrugs = "L'homme : Un plaisir de faire affaire avec toi... Débarasse toi de la voiture maitenant.",
-        textAfterSellDrugsGps = "L'homme : Je t'envoie une position où tu peux la déposer.",
-        getMoneyMessage = "Vous avez reçu : ~b~",
-        textArrivingDropVehicle = "Arrête toi là et laisse la voiture, je vais venir la chercher.",
-        done = "C'est bon j'ai récupéré la caisse, passe me voir si tu veux le refaire.",
-
-        searchAlert = "~b~Centrale : Un véhicule suspecté de GOFAST à été repéré, modèle : ~g~",
-        searchZoneText = "~b~Centrale : ~y~La zone~b~ est sur votre GPS",
-
-        failTimeout = "T'as abandonné la caisse, c'est fini pour cette fois.",
-    },
 }

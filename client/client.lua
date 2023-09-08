@@ -46,11 +46,10 @@ function startGoFast()
         end
         ClearAreaOfVehicles(Config.vehicleCoords.x,Config.vehicleCoords.y,Config.vehicleCoords.z, 100, false, false, false, false, false)
         car = CreateVehicle(hash, Config.vehicleCoords.x,Config.vehicleCoords.y,Config.vehicleCoords.z, Config.vehicleCoords.w, true, false)
-        SetEntityAsMissionEntity(car, true, true)
+        SetEntityAsMissionEntity(car, false, false)
         SetVehicleDoorsLocked(car, 1)
-        SetVehicleDoorsLockedForAllPlayers(car, false)
     
-        sendUserMessage(Config.startNpcName.." : "..Texts.textAfterStarting)
+        sendUserMessage(Config.startNpcName.." : "..Texts.textAfterStarting .. vehicleName)
         sendUserMessage(Config.startNpcName.." : "..Texts.textAfterStartingGps)
 
         local loadDrug = Config.loadDrugs.loadList[math.random(#Config.loadDrugs.loadList)]
@@ -114,7 +113,7 @@ function startGoFast()
                 TriggerServerEvent(Config.sendPoliceSearchZoneServer, playerCoords, vehicleName)
                 isStoppedInZone = true
                 FreezeEntityPosition(car, true)
-                Citizen.Wait(Config.missionTimeout) -- 5 Minutes
+                Citizen.Wait(60000)
                 DeleteEntity(car)
                 car = nil
                 isInMission = false
@@ -202,7 +201,7 @@ function unloadDrugs(car, sellDrugs)
     local ped1, ped2
     local voiturePosition = GetEntityCoords(car)
     
-    local pedHash = GetHashKey(Config.sellDrugs.pedGivingTheMoney.modelName)
+    local pedHash = GetHashKey(sellDrugs.pedGivingTheMoney.modelName)
     RequestModel(pedHash)
     while not HasModelLoaded(pedHash) do
         Wait(50)
@@ -259,7 +258,7 @@ function unloadDrugs(car, sellDrugs)
     TaskGoToCoordAnyMeans(ped1, sellDrugs.ped.spawnCoords.x, sellDrugs.ped.spawnCoords.y, sellDrugs.ped.spawnCoords.z, 1.0, 0, false, 786603, 0xbf800000)
     TaskGoToCoordAnyMeans(ped2, sellDrugs.ped.spawnCoords.x + 2, sellDrugs.ped.spawnCoords.y, sellDrugs.ped.spawnCoords.z, 1.0, 0, false, 786603, 0xbf800000)
    
-    pedGivingTheMoney = CreatePed(26, Config.sellDrugs.pedGivingTheMoney.modelName, Config.sellDrugs.pedGivingTheMoney.spawnCoords.x, Config.sellDrugs.pedGivingTheMoney.spawnCoords.y, Config.sellDrugs.pedGivingTheMoney.spawnCoords.z, 0.0, true, false)
+    pedGivingTheMoney = CreatePed(26, sellDrugs.pedGivingTheMoney.modelName, sellDrugs.pedGivingTheMoney.spawnCoords.x, sellDrugs.pedGivingTheMoney.spawnCoords.y, sellDrugs.pedGivingTheMoney.spawnCoords.z, 0.0, true, false)
     local suitcase = CreateObject(suitcaseModel, 0, 0, 0, true, true, true)
     AttachEntityToEntity(suitcase, pedGivingTheMoney, GetPedBoneIndex(pedGivingTheMoney, 57005), 0.2, 0.0, 0.0, 0.0, -90.0, 0.0, true, true, false, true, 1, true)
     
@@ -309,13 +308,18 @@ function sendUserMessage(text)
     exports["soz-core"]:DrawNotification(text)
 end
 
+function sendPoliceMessage(text)
+    -- Replace this with your notification système
+    exports["soz-core"]:DrawAdvancedNotification(Config.policeNotification.title, Config.policeNotification.subtitle, text, Config.policeNotification.logo)
+end
+
 Citizen.CreateThread(function()
     local hash = GetHashKey(Config.startNpcModel)
     while not HasModelLoaded(hash) do
         RequestModel(hash)
-        Wait(5000)
+        Wait(500)
     end
-    startNpc = CreatePed("PED_TYPE_CIVMALE", Config.startNpcModel, Config.startNpcCoords.x, Config.startNpcCoords.y, Config.startNpcCoords.z, Config.startNpcCoords.w, true, true)
+    startNpc = CreatePed(0, Config.startNpcModel, Config.startNpcCoords.x, Config.startNpcCoords.y, Config.startNpcCoords.z, Config.startNpcCoords.w, false, true)
     SetBlockingOfNonTemporaryEvents(startNpc, true)
     FreezeEntityPosition(startNpc, true)
     SetEntityInvincible(startNpc, true)
@@ -354,8 +358,8 @@ RegisterNetEvent(Config.sendPoliceSearchZoneClient, function(coords, vehicleName
 	SetBlipColour(policeSearchZone, Config.searchZone.SetBlipColour)
 	SetBlipAlpha(policeSearchZone, Config.searchZone.SetBlipAlpha)
 
-    sendUserMessage(Texts.searchAlert..vehicleName)
-    sendUserMessage(Texts.searchZoneText)
+    sendPoliceMessage(Texts.searchAlert..vehicleName)
+    sendPoliceMessage(Texts.searchZoneText)
     PlaySoundFrontend(-1, "Event_Start_Text", "GTAO_FM_Events_Soundset", false)
 end)
 
