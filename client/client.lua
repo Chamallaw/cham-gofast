@@ -364,6 +364,7 @@ RegisterNetEvent(Config.sendPoliceSearchZoneClient, function(coords, vehicleName
 end)
 
 AddEventHandler('onResourceStop', function(resourceName)
+    if (GetCurrentResourceName() ~= resourceName) then return end
     DeleteEntity(startNpc)
     if car ~= nil then
         DeleteEntity(car)

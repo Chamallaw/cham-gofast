@@ -68,10 +68,10 @@ Config = {
                 }, 
             },
             { -- Zone 4
-                zoneCoords = vector3(-925.99, -2923.21, 13.36), -- Coords of the zone
+                zoneCoords = vector3(-800.64, -2904.07, 13.37), -- Coords of the zone
                 ped = { 
                     modelName = "s_m_y_dealer_01", -- Peds model that will bring the box
-                    spawnCoords = vector3(-936.59, -2930.39, 13.96) -- Peds spawn coords (Hide the spawn for more immersion)
+                    spawnCoords = vector3(-815.54, -2905.92, 16.12) -- Peds spawn coords (Hide the spawn for more immersion)
                 }, 
             },
             { -- Zone 5
