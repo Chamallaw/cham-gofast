@@ -67,7 +67,7 @@ function startGoFast()
                 isStopMessageSend = true
             end
             if distance <= Config.loadDrugs.radius and IsVehicleStopped(car) == 1 then
-                TriggerServerEvent(Config.sendPoliceSearchZoneServer, playerCoords, vehicleName)
+                TriggerServerEvent(EVENT.SENDSEARCHZONE_SERVER, playerCoords, vehicleName)
                 isStoppedInZone = true
                 FreezeEntityPosition(car, true)
                 loadDrugs(car, loadDrug)
@@ -89,7 +89,7 @@ function startGoFast()
                 isStopMessageSend = true
             end
             if distance <= Config.sellDrugs.radius and IsVehicleStopped(car) == 1 then
-                TriggerServerEvent(Config.sendPoliceSearchZoneServer, playerCoords, vehicleName)
+                TriggerServerEvent(EVENT.SENDSEARCHZONE_SERVER, playerCoords, vehicleName)
                 isStoppedInZone = true
                 FreezeEntityPosition(car, true)
                 unloadDrugs(car, sellDrug)
@@ -110,7 +110,7 @@ function startGoFast()
                 isStopMessageSend = true
             end
             if distance <= Config.dropRadius and IsVehicleStopped(car) == 1 then
-                TriggerServerEvent(Config.sendPoliceSearchZoneServer, playerCoords, vehicleName)
+                TriggerServerEvent(EVENT.SENDSEARCHZONE_SERVER, playerCoords, vehicleName)
                 isStoppedInZone = true
                 FreezeEntityPosition(car, true)
                 Citizen.Wait(60000)
@@ -159,13 +159,17 @@ function loadDrugs(car, loadDrug)
 
     TaskGoToCoordAnyMeans(drugSeller1, voiturePosition.x, voiturePosition.y, voiturePosition.z, 1.0, 0, false, 786603, 0xbf800000)
     TaskGoToCoordAnyMeans(drugSeller2, voiturePosition.x, voiturePosition.y, voiturePosition.z, 1.0, 0, false, 786603, 0xbf800000)
-    RequestAnimDict(Config.loadDrugs.loadingAnimationDictonary)
-    while not HasAnimDictLoaded(Config.loadDrugs.loadingAnimationDictonary) do
-        Citizen.Wait(0)
-    end
-    TaskPlayAnim(drugSeller1, Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
-    TaskPlayAnim(drugSeller2, Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
     
+    -- RequestAnimDict(Config.loadDrugs.loadingAnimationDictonary)
+    -- while not HasAnimDictLoaded(Config.loadDrugs.loadingAnimationDictonary) do
+    --     Citizen.Wait(0)
+    -- end
+    -- TaskPlayAnim(drugSeller1, Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
+    -- TaskPlayAnim(drugSeller2, Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
+    
+    TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(drugSeller1), Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, false)
+    TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(drugSeller2), Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, false)
+
     while #(GetEntityCoords(drugSeller1) - GetEntityCoords(car)) > 2 and #(GetEntityCoords(drugSeller2) - GetEntityCoords(car)) > 2 do
         Citizen.Wait(500)
     end
@@ -175,8 +179,8 @@ function loadDrugs(car, loadDrug)
     DeleteEntity(box)
     DeleteEntity(box2)
 
-    StopAnimTask(drugSeller1, Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, 1.0)
-    StopAnimTask(drugSeller2, Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, 1.0)
+    TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(drugSeller1), Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, true)
+    TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(drugSeller2), Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, true)
 
     TaskGoToCoordAnyMeans(drugSeller1, loadDrug.ped.spawnCoords.x, loadDrug.ped.spawnCoords.y, loadDrug.ped.spawnCoords.z, 1.0, 0, false, 786603, 0xbf800000)
     TaskGoToCoordAnyMeans(drugSeller2, loadDrug.ped.spawnCoords.x + 1, loadDrug.ped.spawnCoords.y, loadDrug.ped.spawnCoords.z, 1.0, 0, false, 786603, 0xbf800000)
@@ -197,7 +201,6 @@ function loadDrugs(car, loadDrug)
 end
 
 function unloadDrugs(car, sellDrugs)
-    
     local ped1, ped2
     local voiturePosition = GetEntityCoords(car)
     
@@ -238,13 +241,14 @@ function unloadDrugs(car, sellDrugs)
     while #(GetEntityCoords(ped1) - GetEntityCoords(car)) > 2 and #(GetEntityCoords(ped2) - GetEntityCoords(car)) > 2 do
         Citizen.Wait(500)
     end
-    RequestAnimDict(Config.sellDrugs.sellingAnimationDictonary)
-    while not HasAnimDictLoaded(Config.sellDrugs.sellingAnimationDictonary) do
-        Citizen.Wait(0)
-    end
-    TaskPlayAnim(ped1, Config.sellDrugs.sellingAnimationDictonary, Config.sellDrugs.sellingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
-    TaskPlayAnim(ped2, Config.sellDrugs.sellingAnimationDictonary, Config.sellDrugs.sellingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
-    
+    -- RequestAnimDict(Config.sellDrugs.sellingAnimationDictonary)
+    -- while not HasAnimDictLoaded(Config.sellDrugs.sellingAnimationDictonary) do
+    --     Citizen.Wait(0)
+    -- end
+    -- TaskPlayAnim(ped1, Config.sellDrugs.sellingAnimationDictonary, Config.sellDrugs.sellingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
+    -- TaskPlayAnim(ped2, Config.sellDrugs.sellingAnimationDictonary, Config.sellDrugs.sellingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
+    TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(ped1), Config.sellDrugs.sellingAnimationDictonary, Config.sellDrugs.sellingAnimationName, false)
+    TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(ped2), Config.sellDrugs.sellingAnimationDictonary, Config.sellDrugs.sellingAnimationName, false)
     
     local box = CreateObject(cargoHash, 0, 0, 0, true, true, true)
     local box2 = CreateObject(cargoHash, 0, 0, 0, true, true, true)
@@ -274,16 +278,16 @@ function unloadDrugs(car, sellDrugs)
         Citizen.Wait(0)
     end
 
-    TaskPlayAnim(pedGivingTheMoney, Config.sellDrugs.giveMoneyAnimationDictonary, Config.sellDrugs.giveMoneyAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
-
+    TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(pedGivingTheMoney), Config.sellDrugs.giveMoneyAnimationDictonary, Config.sellDrugs.giveMoneyAnimationName, false)
+    
     Citizen.Wait(2000)
 
-    StopAnimTask(pedGivingTheMoney, Config.sellDrugs.giveMoneyAnimationDictonary, Config.sellDrugs.giveMoneyAnimationName, 1.0)
+    TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(pedGivingTheMoney), Config.sellDrugs.giveMoneyAnimationDictonary, Config.sellDrugs.giveMoneyAnimationName, true)
     DeleteEntity(suitcase)
     
     -- Give the player money
     local amount = math.random(Config.minEarningMoney, Config.maxEarningMoney)
-    TriggerServerEvent(Config.giveMoneyServerEventName, Config.moneyType, amount)
+    TriggerServerEvent(EVENT.GIVEMONEY, Config.moneyType, amount)
     sendUserMessage(Texts.getMoneyMessage..amount..Config.currency)
 
     TaskGoToCoordAnyMeans(pedGivingTheMoney, sellDrugs.ped.spawnCoords.x + 1, sellDrugs.ped.spawnCoords.y, sellDrugs.ped.spawnCoords.z, 1.0, 0, false, 786603, 0xbf800000)
@@ -347,7 +351,7 @@ Citizen.CreateThread(function()
 end)
 
 -- Send Police Search Zone
-RegisterNetEvent(Config.sendPoliceSearchZoneClient, function(coords, vehicleName)
+RegisterNetEvent(EVENT.SENDSEARCHZONE_CLIENT, function(coords, vehicleName)
     if policeSearchZone ~= nil then
         RemoveBlip(policeSearchZone)
     end
@@ -368,5 +372,18 @@ AddEventHandler('onResourceStop', function(resourceName)
     DeleteEntity(startNpc)
     if car ~= nil then
         DeleteEntity(car)
+    end
+end)
+
+RegisterNetEvent(EVENT.SYNCHANIMATION_CLIENT, function(pedNetId, dict, anim, stopAnimation)
+    local ped = NetworkGetEntityFromNetworkId(pedNetId)
+    if stopAnimation then
+        StopAnimTask(ped, dict, anim, 1.0)
+    else
+        RequestAnimDict(dict)
+        while not HasAnimDictLoaded(dict) do
+            Citizen.Wait(100)
+        end
+        TaskPlayAnim(ped, dict, anim, 8.0, 8.0, -1, 49, 0, false, false, false)
     end
 end)
