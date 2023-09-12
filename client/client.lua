@@ -132,7 +132,7 @@ function loadDrugs(car, loadDrug)
     SetVehicleDoorOpen(car, 5, false, false)
 
     local drugSeller1, drugSeller2
-    local voiturePosition = GetEntityCoords(car)
+    local carCoords = GetEntityCoords(car)
     
     local pedHash = GetHashKey(loadDrug.ped.modelName)
     RequestModel(pedHash)
@@ -157,25 +157,21 @@ function loadDrugs(car, loadDrug)
     AttachEntityToEntity(box, drugSeller1, GetPedBoneIndex(drugSeller1, 28422), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, true, true, false, true, 1, true)
     AttachEntityToEntity(box2, drugSeller2, GetPedBoneIndex(drugSeller2, 28422), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, true, true, false, true, 1, true)
 
-    TaskGoToCoordAnyMeans(drugSeller1, voiturePosition.x, voiturePosition.y, voiturePosition.z, 1.0, 0, false, 786603, 0xbf800000)
-    TaskGoToCoordAnyMeans(drugSeller2, voiturePosition.x, voiturePosition.y, voiturePosition.z, 1.0, 0, false, 786603, 0xbf800000)
-    
-    -- RequestAnimDict(Config.loadDrugs.loadingAnimationDictonary)
-    -- while not HasAnimDictLoaded(Config.loadDrugs.loadingAnimationDictonary) do
-    --     Citizen.Wait(0)
-    -- end
-    -- TaskPlayAnim(drugSeller1, Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
-    -- TaskPlayAnim(drugSeller2, Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
+    local taskCoords = FindOppositePoint(carCoords.x, carCoords.y, carCoords.z, GetEntityPhysicsHeading(car), 2.5)
+    TaskGoToCoordAnyMeans(drugSeller1, taskCoords.x, taskCoords.y, taskCoords.z, 1.0, 0, false, 786603, 0xbf800000)
+    TaskGoToCoordAnyMeans(drugSeller2, taskCoords.x, taskCoords.y, taskCoords.z, 1.0, 0, false, 786603, 0xbf800000)
     
     TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(drugSeller1), Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, false)
     TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(drugSeller2), Config.loadDrugs.loadingAnimationDictonary, Config.loadDrugs.loadingAnimationName, false)
 
-    while #(GetEntityCoords(drugSeller1) - GetEntityCoords(car)) > 2 and #(GetEntityCoords(drugSeller2) - GetEntityCoords(car)) > 2 do
+    while #(GetEntityCoords(drugSeller1) - taskCoords) > 1.5 and #(GetEntityCoords(drugSeller2) - taskCoords) > 1.5 do
         Citizen.Wait(500)
     end
+    Citizen.Wait(1000)
+    SetEntityHeading(drugSeller1, GetEntityPhysicsHeading(car))
+    SetEntityHeading(drugSeller2, GetEntityPhysicsHeading(car))
+    Citizen.Wait(4000)
     
-    Citizen.Wait(5000)
-
     DeleteEntity(box)
     DeleteEntity(box2)
 
@@ -202,7 +198,7 @@ end
 
 function unloadDrugs(car, sellDrugs)
     local ped1, ped2
-    local voiturePosition = GetEntityCoords(car)
+    local carCoords = GetEntityCoords(car)
     
     local pedHash = GetHashKey(sellDrugs.pedGivingTheMoney.modelName)
     RequestModel(pedHash)
@@ -234,19 +230,18 @@ function unloadDrugs(car, sellDrugs)
     ped1 = CreatePed(26, sellDrugs.ped.modelName, sellDrugs.ped.spawnCoords.x, sellDrugs.ped.spawnCoords.y, sellDrugs.ped.spawnCoords.z, 0.0, true, false)
     ped2 = CreatePed(26, sellDrugs.ped.modelName, sellDrugs.ped.spawnCoords.x + 1, sellDrugs.ped.spawnCoords.y, sellDrugs.ped.spawnCoords.z, 0.0, true, false)
     
-    TaskGoToCoordAnyMeans(ped1, voiturePosition.x, voiturePosition.y, voiturePosition.z, 1.0, 0, false, 786603, 0xbf800000)
-    TaskGoToCoordAnyMeans(ped2, voiturePosition.x, voiturePosition.y, voiturePosition.z, 1.0, 0, false, 786603, 0xbf800000)
+    local taskCoords = FindOppositePoint(carCoords.x, carCoords.y, carCoords.z, GetEntityPhysicsHeading(car), 2.5)
+    TaskGoToCoordAnyMeans(ped1, taskCoords.x, taskCoords.y, taskCoords.z, 1.0, 0, false, 786603, 0xbf800000)
+    TaskGoToCoordAnyMeans(ped2, taskCoords.x, taskCoords.y, taskCoords.z, 1.0, 0, false, 786603, 0xbf800000)
     
     SetVehicleDoorOpen(car, 5, false, false)
-    while #(GetEntityCoords(ped1) - GetEntityCoords(car)) > 2 and #(GetEntityCoords(ped2) - GetEntityCoords(car)) > 2 do
+    while #(GetEntityCoords(ped1) - taskCoords) > 2 and #(GetEntityCoords(ped2) - taskCoords) > 2 do
         Citizen.Wait(500)
     end
-    -- RequestAnimDict(Config.sellDrugs.sellingAnimationDictonary)
-    -- while not HasAnimDictLoaded(Config.sellDrugs.sellingAnimationDictonary) do
-    --     Citizen.Wait(0)
-    -- end
-    -- TaskPlayAnim(ped1, Config.sellDrugs.sellingAnimationDictonary, Config.sellDrugs.sellingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
-    -- TaskPlayAnim(ped2, Config.sellDrugs.sellingAnimationDictonary, Config.sellDrugs.sellingAnimationName, 8.0, -8.0, -1, 49, 0, false, false, false)
+    Citizen.Wait(1000)
+    SetEntityHeading(ped1, GetEntityPhysicsHeading(car))
+    SetEntityHeading(ped2, GetEntityPhysicsHeading(car))
+    
     TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(ped1), Config.sellDrugs.sellingAnimationDictonary, Config.sellDrugs.sellingAnimationName, false)
     TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(ped2), Config.sellDrugs.sellingAnimationDictonary, Config.sellDrugs.sellingAnimationName, false)
     
@@ -258,7 +253,7 @@ function unloadDrugs(car, sellDrugs)
     Wait(500)
    
     SetVehicleDoorShut(car, 5, false)
-   
+
     TaskGoToCoordAnyMeans(ped1, sellDrugs.ped.spawnCoords.x, sellDrugs.ped.spawnCoords.y, sellDrugs.ped.spawnCoords.z, 1.0, 0, false, 786603, 0xbf800000)
     TaskGoToCoordAnyMeans(ped2, sellDrugs.ped.spawnCoords.x + 2, sellDrugs.ped.spawnCoords.y, sellDrugs.ped.spawnCoords.z, 1.0, 0, false, 786603, 0xbf800000)
    
@@ -266,18 +261,13 @@ function unloadDrugs(car, sellDrugs)
     local suitcase = CreateObject(suitcaseModel, 0, 0, 0, true, true, true)
     AttachEntityToEntity(suitcase, pedGivingTheMoney, GetPedBoneIndex(pedGivingTheMoney, 57005), 0.2, 0.0, 0.0, 0.0, -90.0, 0.0, true, true, false, true, 1, true)
     
-    local playerPos = GetEntityCoords(PlayerPedId())
-    TaskGoToCoordAnyMeans(pedGivingTheMoney, playerPos.x, playerPos.y, playerPos.z, 1.0, 0, false, 786603, 0xbf800000)
+    TaskGoToCoordAnyMeans(pedGivingTheMoney, taskCoords.x, taskCoords.y, taskCoords.z, 1.0, 0, false, 786603, 0xbf800000)
     
-    while #(playerPos - GetEntityCoords(pedGivingTheMoney)) > 2 do
+    while #(taskCoords - GetEntityCoords(pedGivingTheMoney)) > 2 do
         Citizen.Wait(500)
     end
-
-    RequestAnimDict(Config.sellDrugs.giveMoneyAnimationDictonary)
-    while not HasAnimDictLoaded(Config.sellDrugs.giveMoneyAnimationDictonary) do
-        Citizen.Wait(0)
-    end
-
+    Citizen.Wait(1000)
+    SetEntityHeading(ped1, GetEntityPhysicsHeading(car))
     TriggerServerEvent(EVENT.SYNCHANIMATION_SERVER, NetworkGetNetworkIdFromEntity(pedGivingTheMoney), Config.sellDrugs.giveMoneyAnimationDictonary, Config.sellDrugs.giveMoneyAnimationName, false)
     
     Citizen.Wait(2000)
@@ -387,3 +377,23 @@ RegisterNetEvent(EVENT.SYNCHANIMATION_CLIENT, function(pedNetId, dict, anim, sto
         TaskPlayAnim(ped, dict, anim, 8.0, 8.0, -1, 49, 0, false, false, false)
     end
 end)
+
+function FindOppositePoint(x, y, z, heading, distance)
+    -- Ajouter 180 degrés pour obtenir la direction opposée
+    local opposite_theta = heading + 270
+
+    -- S'assurer que la direction reste dans [0, 360)
+    if opposite_theta >= 360 then
+        opposite_theta = opposite_theta - 360
+    end
+
+    -- Convertir theta de degrés à radians
+    local theta_rad = math.pi * opposite_theta / 180
+
+    -- Trouver le point sur le cercle de rayon 2 mètres dans la direction opposée
+    local x_new = x + distance * math.cos(theta_rad)
+    local y_new = y + distance * math.sin(theta_rad)
+
+    -- Retourner les nouvelles coordonnées
+    return vector3(x_new, y_new, z)
+end
