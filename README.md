@@ -23,6 +23,9 @@ end
 * Find the start NPC and press E (INPUT CONTEXT KEY)
 
 ## Patch Notes
+#### V1.2
+* Adding synch animations for all the players arround
+* Adding a function to get the trunk coords, and make it more realistic
 #### V1.1
 * Replacing the old text with QB-Target
 * Adding customisable search zone when the player is loading, unloading or throwing the car
