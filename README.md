@@ -40,4 +40,4 @@ end
 * Adding the remove peds and car at the end
 
 ## Note
-* This script is paid, so if you didn't pay please do not use it.
+* Feel free to use 
